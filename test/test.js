@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 import { jest, test, expect } from '@jest/globals'
-import { constant, flow, getFlow, get, setFlow, set } from '../index'
+import { constant, flow, getFlow, get, setFlow, set, updateFlow, update } from '../index'
 
 jest.setTimeout(30000)
 
@@ -34,7 +34,7 @@ test('test thread', () => {
     expect(result).toBe('result 16')
 })
 
-test('test getFlow 1', () => {
+test('test get 1', () => {
     {
         const obj = { a: 1, b: { c: 1 } }
         const path = ['b', 'c']
@@ -46,7 +46,7 @@ test('test getFlow 1', () => {
     }
 })
 
-test('test getFlow 2', () => {
+test('test get 2', () => {
     {
         const obj = { a: 1, b: { c: [{ d: 1 }] } }
         const path = ['b', 'c', 0, 'd']
@@ -58,7 +58,7 @@ test('test getFlow 2', () => {
     }
 })
 
-test('test setFlow 1', () => {
+test('test set 1', () => {
     {
         const obj = { a: 1, b: { c: { d: 1 } } }
         const path = ['b', 'c', 'd']
@@ -73,7 +73,7 @@ test('test setFlow 1', () => {
     }
 })
 
-test('test setFlow 2', () => {
+test('test set 2', () => {
     {
         const obj = { a: 1, b: { c: [{ d: 1 }] } }
         const path = ['b', 'c', 0, 'd']
@@ -82,5 +82,28 @@ test('test setFlow 2', () => {
 
         setFlow1(obj)
         expect(obj.b.c[0].d).toBe(value)
+    }
+})
+
+test('test update 1', () => {
+    {
+        const obj = { a: 1, b: { c: { d: 1 } } }
+        const path = ['b', 'c', 'd']
+        const inc = (x) => x + 1
+        const updateFlow1 = updateFlow(path, inc)
+        const dec = (x) => x - 1
+        const updateFlow2 = updateFlow(path, dec)
+
+        updateFlow1(obj)
+        expect(obj.b.c.d).toBe(2)
+
+        updateFlow1(obj)
+        expect(obj.b.c.d).toBe(3)
+
+        updateFlow2(obj)
+        expect(obj.b.c.d).toBe(2)
+
+        update(obj, path, (x) => x * x)
+        expect(obj.b.c.d).toBe(4)
     }
 })
