@@ -1,11 +1,14 @@
 const constant = v => () => v
-const flow = (...args) => {
-  const f = args.pop()
-  if (f) return v => f(flow(...args)(v))
-  else return v => v
+
+const flow = (...fns) => {
+  const f = fns.pop()
+  return f ? v => f(flow(...fns)(v)) : v => v
 }
+
+const thread = (arg, ...fns) => flow(...fns)(arg)
 
 module.exports = {
   constant,
-  flow
+  flow,
+  thread
 }
