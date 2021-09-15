@@ -38,6 +38,13 @@ const updateFlow = (path, fun) => (o) => flow(getFlow(path), fun, (v) => setFlow
 
 const update = (o, path, fun) => updateFlow(path, fun)(o)
 
+const pathFlow =
+    (...keys) =>
+    (...nextKeys) =>
+        keys.concat(nextKeys)
+
+const path = (...keys) => pathFlow(...keys)
+
 module.exports = {
     constant,
     flow,
@@ -53,5 +60,7 @@ module.exports = {
     setFlow,
     set,
     updateFlow,
-    update
+    update,
+    pathFlow,
+    path
 }

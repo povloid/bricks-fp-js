@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 import { jest, test, expect } from '@jest/globals'
-import { constant, flow, getFlow, get, setFlow, set, updateFlow, update } from '../index'
+import { constant, flow, getFlow, get, setFlow, set, updateFlow, update, pathFlow } from '../index'
 
 jest.setTimeout(30000)
 
@@ -89,6 +89,32 @@ test('test update 1', () => {
     {
         const obj = { a: 1, b: { c: { d: 1 } } }
         const path = ['b', 'c', 'd']
+        const inc = (x) => x + 1
+        const updateFlow1 = updateFlow(path, inc)
+        const dec = (x) => x - 1
+        const updateFlow2 = updateFlow(path, dec)
+
+        updateFlow1(obj)
+        expect(obj.b.c.d).toBe(2)
+
+        updateFlow1(obj)
+        expect(obj.b.c.d).toBe(3)
+
+        updateFlow2(obj)
+        expect(obj.b.c.d).toBe(2)
+
+        update(obj, path, (x) => x * x)
+        expect(obj.b.c.d).toBe(4)
+    }
+})
+
+test('test path 1', () => {
+    {
+        const obj = { a: 1, b: { c: { d: 1 } } }
+
+        const basePathF = pathFlow('b', 'c')
+        const path = basePathF('d')
+
         const inc = (x) => x + 1
         const updateFlow1 = updateFlow(path, inc)
         const dec = (x) => x - 1
