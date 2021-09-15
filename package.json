@@ -1,0 +1,9 @@
+{
+  "name": "bricks-fp-js",
+  "version": "1.0.0",
+  "description": "bricks of functional programming",
+  "main": "index.js",
+  "repository": "git@github.com:povloid/bricks-fp-js.git",
+  "author": "Pavel Kopychenko <t34box@gmail.com>",
+  "license": "GPL3"
+}
