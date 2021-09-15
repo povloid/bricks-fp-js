@@ -5,5 +5,5 @@
   "main": "index.js",
   "repository": "git@github.com:povloid/bricks-fp-js.git",
   "author": "Pavel Kopychenko <t34box@gmail.com>",
-  "license": "GPL3"
+  "license": "GPL-3.0"
 }
