@@ -34,9 +34,16 @@ const setFlow = (path, value) => (o) => {
 
 const set = (o, path, value) => setFlow(path, value)(o)
 
-const updateFlow = (path, fun) => (o) => flow(getFlow(path), fun, (v) => setFlow(path, v)(o))(o)
+const updateFlow =
+    (path, fun, ...args) =>
+    (o) =>
+        flow(
+            getFlow(path),
+            (v) => fun(v, ...args),
+            (v) => setFlow(path, v)(o)
+        )(o)
 
-const update = (o, path, fun) => updateFlow(path, fun)(o)
+const update = (o, path, fun, ...args) => updateFlow(path, fun, ...args)(o)
 
 const pathFlow =
     (...keys) =>
