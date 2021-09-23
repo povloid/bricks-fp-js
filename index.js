@@ -13,15 +13,15 @@ const flow = (...fns) => {
     return f ? (v) => f(flow(...fns)(v)) : (v) => v
 }
 
-const threadFlow = flow
+const thread_ = flow
 const thread = (arg, ...fns) => flow(...fns)(arg)
 
-const getFlow = (path, defaultValue) =>
+const get_ = (path, defaultValue) =>
     flow((o) => o || defaultValue, ...path.map((k) => (o) => isNil(o) ? o : o[k]))
 
-const get = (o, path, defaultValue) => getFlow(path, defaultValue)(o)
+const get = (o, path, defaultValue) => get_(path, defaultValue)(o)
 
-const setFlow = (path, value) => (o) => {
+const set_ = (path, value) => (o) => {
     const setByKey = (o, [k, ...keys], value) => {
         if ((k && isObject(o)) || isArray(o)) {
             o[k] = setByKey(o[k] || {}, keys, value)
@@ -31,27 +31,27 @@ const setFlow = (path, value) => (o) => {
     return setByKey(o, path, value)
 }
 
-const set = (o, path, value) => setFlow(path, value)(o)
+const set = (o, path, value) => set_(path, value)(o)
 
-const updateFlow =
+const update_ =
     (path, fun, ...args) =>
     (o) =>
         flow(
-            getFlow(path),
+            get_(path),
             (v) => fun(v, ...args),
-            (v) => setFlow(path, v)(o)
+            (v) => set_(path, v)(o)
         )(o)
 
-const update = (o, path, fun, ...args) => updateFlow(path, fun, ...args)(o)
+const update = (o, path, fun, ...args) => update_(path, fun, ...args)(o)
 
-const pathFlow =
+const path_ =
     (...keys) =>
     (...nextKeys) =>
         keys.concat(nextKeys)
 
-const path = (...keys) => pathFlow(...keys)
+const path = (...keys) => path_(...keys)
 
-const mapFlow = (fun) => (coll1) => {
+const map_ = (fun) => (coll1) => {
     if (coll1 && fun) {
         let coll2 = []
         const items = coll1 instanceof Array ? coll1 : Object.entries(coll1)
@@ -64,9 +64,9 @@ const mapFlow = (fun) => (coll1) => {
     }
 }
 
-const map = (coll, fun) => mapFlow(fun)(coll)
+const map = (coll, fun) => map_(fun)(coll)
 
-const reduceFlow = (fun, acc) => (coll) => {
+const reduce_ = (fun, acc) => (coll) => {
     if (coll && fun) {
         const items = coll instanceof Array ? coll : Object.entries(coll)
         for (const e of items) {
@@ -78,9 +78,9 @@ const reduceFlow = (fun, acc) => (coll) => {
     }
 }
 
-const reduce = (coll, fun, acc) => reduceFlow(fun, acc)(coll)
+const reduce = (coll, fun, acc) => reduce_(fun, acc)(coll)
 
-const pickFlow = (keys) => (obj) =>
+const pick_ = (keys) => (obj) =>
     obj && keys
         ? reduce(
               keys,
@@ -92,9 +92,9 @@ const pickFlow = (keys) => (obj) =>
           )
         : {}
 
-const pick = (obj, keys) => pickFlow(keys)(obj)
+const pick = (obj, keys) => pick_(keys)(obj)
 
-const omitFlow = (keys) => (obj) =>
+const omit_ = (keys) => (obj) =>
     obj && keys
         ? reduce(
               keys,
@@ -106,13 +106,13 @@ const omitFlow = (keys) => (obj) =>
           )
         : {}
 
-const omit = (obj, keys) => omitFlow(keys)(obj)
+const omit = (obj, keys) => omit_(keys)(obj)
 
 const size = (value) => (value == null ? 0 : value.length)
 
 const isEmpty = (value) => (value == null ? true : !value.length)
 
-const chunkFlow = (size) => (coll) => {
+const chunk_ = (size) => (coll) => {
     if (isEmpty(coll)) return []
     if (isNil(size)) return []
     if (size === 0) return []
@@ -129,7 +129,7 @@ const chunkFlow = (size) => (coll) => {
     return result
 }
 
-const chunk = (coll, size) => chunkFlow(size)(coll)
+const chunk = (coll, size) => chunk_(size)(coll)
 
 const reverse = (coll) => {
     if (coll) {
@@ -140,42 +140,42 @@ const reverse = (coll) => {
     }
 }
 
-const sortFlow =
+const sort_ =
     (...args) =>
     (coll) =>
         coll ? coll.sort(...args) : []
-const sort = (coll, ...args) => sortFlow(...args)(coll)
+const sort = (coll, ...args) => sort_(...args)(coll)
 
-const someFlow =
+const some_ =
     (...args) =>
     (coll) =>
         coll ? coll.some(...args) : false
-const some = (coll, ...args) => (some ? someFlow(...args)(coll) : false)
+const some = (coll, ...args) => (some ? some_(...args)(coll) : false)
 
-const joinFlow = (separator) => (coll) => coll ? coll.join(separator) : ''
-const join = (coll, separator) => joinFlow(separator)(coll)
+const join_ = (separator) => (coll) => coll ? coll.join(separator) : ''
+const join = (coll, separator) => join_(separator)(coll)
 
-const includesFlow =
+const includes_ =
     (...args) =>
     (coll) =>
         coll ? coll.includes(...args) : false
 
-const includes = (coll, ...args) => includesFlow(...args)(coll)
+const includes = (coll, ...args) => includes_(...args)(coll)
 
-const filterFlow = (fun) => (coll) => coll ? coll.filter(fun) : []
-const filter = (coll, fun) => filterFlow(fun)(coll)
+const filter_ = (fun) => (coll) => coll ? coll.filter(fun) : []
+const filter = (coll, fun) => filter_(fun)(coll)
 
-const concatFlow =
+const concat_ =
     (...args) =>
     (coll) =>
         (coll ? coll : [coll]).concat(...args)
 
-const concat = (coll, ...args) => concatFlow(...args)(coll)
+const concat = (coll, ...args) => concat_(...args)(coll)
 
 module.exports = {
     constant,
     flow,
-    threadFlow,
+    thread_,
     thread,
     isNil,
     isBoolean,
@@ -183,35 +183,35 @@ module.exports = {
     isString,
     isArray,
     isObject,
-    getFlow,
+    get_,
     get,
-    setFlow,
+    set_,
     set,
-    updateFlow,
+    update_,
     update,
-    pathFlow,
+    path_,
     path,
-    mapFlow,
+    map_,
     map,
-    reduceFlow,
+    reduce_,
     reduce,
-    pickFlow,
+    pick_,
     pick,
-    omitFlow,
+    omit_,
     omit,
     size,
     isEmpty,
-    chunkFlow,
+    chunk_,
     chunk,
     reverse,
-    sortFlow,
+    sort_,
     sort,
-    someFlow,
+    some_,
     some,
     filter,
     join,
-    includesFlow,
+    includes_,
     includes,
-    concatFlow,
+    concat_,
     concat
 }

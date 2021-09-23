@@ -5,13 +5,13 @@ import { jest, test, expect } from '@jest/globals'
 import {
     constant,
     flow,
-    getFlow,
+    get_,
     get,
-    setFlow,
+    set_,
     set,
-    updateFlow,
+    update_,
     update,
-    pathFlow,
+    path_,
     pick,
     omit,
     map,
@@ -62,9 +62,9 @@ test('test get 1', () => {
     const obj = { a: 1, b: { c: 1 } }
     const path = ['b', 'c']
     const defaultValue = 222
-    const getFlow1 = getFlow(path, defaultValue)
+    const get_1 = get_(path, defaultValue)
 
-    expect(getFlow1(obj)).toBe(1)
+    expect(get_1(obj)).toBe(1)
     expect(get(obj, path, defaultValue)).toBe(1)
 })
 
@@ -72,9 +72,9 @@ test('test get 2', () => {
     const obj = { a: 1, b: { c: [{ d: 1 }] } }
     const path = ['b', 'c', 0, 'd']
     const defaultValue = 222
-    const getFlow1 = getFlow(path, defaultValue)
+    const get_1 = get_(path, defaultValue)
 
-    expect(getFlow1(obj)).toBe(1)
+    expect(get_1(obj)).toBe(1)
     expect(get(obj, path, defaultValue)).toBe(1)
 })
 
@@ -82,9 +82,9 @@ test('test set 1', () => {
     const obj = { a: 1, b: { c: { d: 1 } } }
     const path = ['b', 'c', 'd']
     const value = 222
-    const setFlow1 = setFlow(path, value)
+    const set_1 = set_(path, value)
 
-    setFlow1(obj)
+    set_1(obj)
     expect(obj.b.c.d).toBe(value)
 
     set(obj, [1, 2, 3, 4, 5], 6)
@@ -95,9 +95,9 @@ test('test set 2', () => {
     const obj = { a: 1, b: { c: [{ d: 1 }] } }
     const path = ['b', 'c', 0, 'd']
     const value = 222
-    const setFlow1 = setFlow(path, value)
+    const set_1 = set_(path, value)
 
-    setFlow1(obj)
+    set_1(obj)
     expect(obj.b.c[0].d).toBe(value)
 })
 
@@ -105,17 +105,17 @@ test('test update 1', () => {
     const obj = { a: 1, b: { c: { d: 1 } } }
     const path = ['b', 'c', 'd']
     const inc = (x) => x + 1
-    const updateFlow1 = updateFlow(path, inc)
+    const update_1 = update_(path, inc)
     const dec = (x) => x - 1
-    const updateFlow2 = updateFlow(path, dec)
+    const update_2 = update_(path, dec)
 
-    updateFlow1(obj)
+    update_1(obj)
     expect(obj.b.c.d).toBe(2)
 
-    updateFlow1(obj)
+    update_1(obj)
     expect(obj.b.c.d).toBe(3)
 
-    updateFlow2(obj)
+    update_2(obj)
     expect(obj.b.c.d).toBe(2)
 
     update(obj, path, (x) => x * x)
@@ -137,21 +137,21 @@ test('test update 1', () => {
 test('test path 1', () => {
     const obj = { a: 1, b: { c: { d: 1 } } }
 
-    const basePathF = pathFlow('b', 'c')
+    const basePathF = path_('b', 'c')
     const path = basePathF('d')
 
     const inc = (x) => x + 1
-    const updateFlow1 = updateFlow(path, inc)
+    const update_1 = update_(path, inc)
     const dec = (x) => x - 1
-    const updateFlow2 = updateFlow(path, dec)
+    const update_2 = update_(path, dec)
 
-    updateFlow1(obj)
+    update_1(obj)
     expect(obj.b.c.d).toBe(2)
 
-    updateFlow1(obj)
+    update_1(obj)
     expect(obj.b.c.d).toBe(3)
 
-    updateFlow2(obj)
+    update_2(obj)
     expect(obj.b.c.d).toBe(2)
 
     update(obj, path, (x) => x * x)
