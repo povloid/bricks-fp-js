@@ -37,7 +37,8 @@ import {
     slice,
     head,
     last,
-    reduceRight
+    reduceRight,
+    thread
 } from '../index'
 
 jest.setTimeout(30000)
@@ -62,12 +63,7 @@ test('test thread', () => {
     const inc = (i) => i + 1
     const dec = (i) => i - 1
     const square = (i) => i * i
-
-    const primer1F = flow(inc, inc, dec, inc, inc, square, (o) => `result ${o}`)
-
-    const result = primer1F(1)
-
-    expect(result).toBe('result 16')
+    expect(thread(1, inc, inc, dec, inc, inc, square, (o) => `result ${o}`)).toBe('result 16')
 })
 
 test('test get 1', () => {
