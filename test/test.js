@@ -36,7 +36,8 @@ import {
     push,
     slice,
     head,
-    last
+    last,
+    reduceRight
 } from '../index'
 
 jest.setTimeout(30000)
@@ -186,6 +187,16 @@ test('test reduce', () => {
 test('test reduce object', () => {
     expect(reduce({ a: 1, b: 2, c: 3 }, (a, [k, v]) => a + v, 0)).toBe(6)
     expect(reduce({ a: 1, b: 2, c: 3 }, (a, [k]) => a + k, '')).toBe('abc')
+})
+
+test('test reduceRight', () => {
+    expect(reduceRight(null, (a, x) => a + x, 0)).toStrictEqual(0)
+    expect(reduceRight([1, 2, 3, 4, 5], (a, x) => a + x, 0)).toBe(15)
+})
+
+test('test reduceRight object', () => {
+    expect(reduceRight({ a: 1, b: 2, c: 3 }, (a, [k, v]) => a + v, 0)).toBe(6)
+    expect(reduceRight({ a: 1, b: 2, c: 3 }, (a, [k]) => a + k, '')).toBe('abc')
 })
 
 test('test pick', () => {

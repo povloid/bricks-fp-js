@@ -80,6 +80,20 @@ const reduce_ = (fun, acc) => (coll) => {
 
 const reduce = (coll, fun, acc) => reduce_(fun, acc)(coll)
 
+const reduceRight_ = (fun, acc) => (coll) => {
+    if (coll && fun) {
+        const items = coll instanceof Array ? coll : Object.entries(coll)
+        for (const e of items) {
+            acc = fun(acc, e)
+        }
+        return acc
+    } else {
+        return acc
+    }
+}
+
+const reduceRight = (coll, fun, acc) => reduceRight_(fun, acc)(coll)
+
 const pick_ = (keys) => (obj) =>
     obj && keys
         ? reduce(
@@ -249,6 +263,8 @@ module.exports = {
     map,
     reduce_,
     reduce,
+    reduceRight_,
+    reduceRight,
     pick_,
     pick,
     omit_,
