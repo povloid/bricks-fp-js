@@ -163,10 +163,12 @@ test('test map for array', () => {
 })
 
 test('test map for object', () => {
+    expect(map(null, (x) => x + 1)).toStrictEqual([])
     expect(map([1, 2, 3, 4, 5], (x) => x + 1)).toStrictEqual([2, 3, 4, 5, 6])
 })
 
 test('test reduce', () => {
+    expect(reduce(null, (a, x) => a + x, 0)).toStrictEqual(0)
     expect(reduce([1, 2, 3, 4, 5], (a, x) => a + x, 0)).toBe(15)
 })
 
@@ -176,16 +178,17 @@ test('test reduce object', () => {
 })
 
 test('test pick', () => {
-    const obj = { a: 1, b: { c: { d: 1 } }, e: '3' }
-    expect(pick(obj, ['a', 'e'])).toStrictEqual({ a: 1, e: '3' })
+    expect(pick(null, ['a', 'e'])).toStrictEqual({})
+    expect(pick({ a: 1, b: { c: { d: 1 } }, e: '3' }, ['a', 'e'])).toStrictEqual({ a: 1, e: '3' })
 })
 
 test('test omit', () => {
-    const obj = { a: 1, b: { c: { d: 1 } }, e: '3' }
-    expect(omit(obj, ['b'])).toStrictEqual({ a: 1, e: '3' })
+    expect(omit(null, ['b'])).toStrictEqual({})
+    expect(omit({ a: 1, b: { c: { d: 1 } }, e: '3' }, ['b'])).toStrictEqual({ a: 1, e: '3' })
 })
 
 test('test size', () => {
+    expect(size(null)).toBe(0)
     expect(size([])).toBe(0)
     expect(size('')).toBe(0)
     expect(size([1])).toBe(1)
@@ -195,6 +198,7 @@ test('test size', () => {
 })
 
 test('test isEmpty', () => {
+    expect(isEmpty(null)).toBe(true)
     expect(isEmpty([])).toBe(true)
     expect(isEmpty('')).toBe(true)
     expect(isEmpty([1])).toBe(false)
@@ -202,7 +206,8 @@ test('test isEmpty', () => {
 })
 
 test('test chunk', () => {
-    expect(chunk([])).toStrictEqual([])
+    expect(chunk(null)).toStrictEqual([])
+    expect(chunk([], null)).toStrictEqual([])
     expect(chunk([1, 2, 3, 4, 5], 3)).toStrictEqual([
         [1, 2, 3],
         [4, 5]
@@ -211,11 +216,13 @@ test('test chunk', () => {
 })
 
 test('test reverse', () => {
+    expect(reverse(null)).toStrictEqual([])
     expect(reverse([])).toStrictEqual([])
     expect(reverse([1, 2, 3, 4, 5])).toStrictEqual([5, 4, 3, 2, 1])
 })
 
 test('test sort', () => {
+    expect(sort(null)).toStrictEqual([])
     expect(sort([])).toStrictEqual([])
     expect(sort([3, 2, 4, 1, 5])).toStrictEqual([1, 2, 3, 4, 5])
     expect(
@@ -248,29 +255,35 @@ test('test sort', () => {
 
 test('test some', () => {
     const pred = (x) => x > 3
+    expect(some(null, pred)).toStrictEqual(false)
     expect(some([], pred)).toStrictEqual(false)
     expect(some([1, 2, 3], pred)).toStrictEqual(false)
     expect(some([1, 2, 3, 3, 3, 4, 1], pred)).toStrictEqual(true)
 })
 
 test('test join', () => {
+    expect(join(null, ',')).toStrictEqual('')
     expect(join([], ',')).toStrictEqual('')
     expect(join([1, 2, 3], ',')).toStrictEqual('1,2,3')
 })
 
 test('test includes', () => {
+    expect(includes(null, 1)).toStrictEqual(false)
     expect(includes([], 1)).toStrictEqual(false)
     expect(includes([1, 2, 3], 2)).toStrictEqual(true)
 })
 
 test('test filter', () => {
     const pred = (x) => x > 3
+    expect(filter(null, pred)).toStrictEqual([])
     expect(filter([], pred)).toStrictEqual([])
     expect(filter([1, 2, 3], pred)).toStrictEqual([])
     expect(filter([1, 2, 3, 3, 3, 4, 1], pred)).toStrictEqual([4])
 })
 
 test('test concat', () => {
+    expect(concat(null, [])).toStrictEqual([null])
+    expect(concat(null, [2, 4])).toStrictEqual([null, 2, 4])
     expect(concat([], [])).toStrictEqual([])
     expect(concat([1, 2, 3], [4])).toStrictEqual([1, 2, 3, 4])
     expect(concat([1, 2, 3], [4, 5], [6])).toStrictEqual([1, 2, 3, 4, 5, 6])

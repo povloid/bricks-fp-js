@@ -60,7 +60,7 @@ const mapFlow = (fun) => (coll1) => {
         }
         return coll2
     } else {
-        return coll1
+        return []
     }
 }
 
@@ -74,7 +74,7 @@ const reduceFlow = (fun, acc) => (coll) => {
         }
         return acc
     } else {
-        return coll
+        return acc
     }
 }
 
@@ -90,7 +90,7 @@ const pickFlow = (keys) => (obj) =>
               },
               {}
           )
-        : obj
+        : {}
 
 const pick = (obj, keys) => pickFlow(keys)(obj)
 
@@ -104,7 +104,7 @@ const omitFlow = (keys) => (obj) =>
               },
               obj
           )
-        : obj
+        : {}
 
 const omit = (obj, keys) => omitFlow(keys)(obj)
 
@@ -113,6 +113,10 @@ const size = (value) => (value == null ? 0 : value.length)
 const isEmpty = (value) => (value == null ? true : !value.length)
 
 const chunkFlow = (size) => (coll) => {
+    if (isEmpty(coll)) return []
+    if (isNil(size)) return []
+    if (size === 0) return []
+
     const items = coll instanceof Array ? coll : Object.entries(coll)
     let result = []
     let offset = 0
@@ -127,37 +131,44 @@ const chunkFlow = (size) => (coll) => {
 
 const chunk = (coll, size) => chunkFlow(size)(coll)
 
-const reverse = (coll) => coll.reverse()
+const reverse = (coll) => {
+    if (coll) {
+        coll.reverse()
+        return coll
+    } else {
+        return []
+    }
+}
 
 const sortFlow =
     (...args) =>
     (coll) =>
-        coll.sort(...args)
+        coll ? coll.sort(...args) : []
 const sort = (coll, ...args) => sortFlow(...args)(coll)
 
 const someFlow =
     (...args) =>
     (coll) =>
-        coll.some(...args)
-const some = (coll, ...args) => someFlow(...args)(coll)
+        coll ? coll.some(...args) : false
+const some = (coll, ...args) => (some ? someFlow(...args)(coll) : false)
 
-const joinFlow = (separator) => (coll) => coll.join(separator)
+const joinFlow = (separator) => (coll) => coll ? coll.join(separator) : ''
 const join = (coll, separator) => joinFlow(separator)(coll)
 
 const includesFlow =
     (...args) =>
     (coll) =>
-        coll.includes(...args)
+        coll ? coll.includes(...args) : false
 
 const includes = (coll, ...args) => includesFlow(...args)(coll)
 
-const filterFlow = (fun) => (coll) => coll.filter(fun)
+const filterFlow = (fun) => (coll) => coll ? coll.filter(fun) : []
 const filter = (coll, fun) => filterFlow(fun)(coll)
 
 const concatFlow =
     (...args) =>
     (coll) =>
-        coll.concat(...args)
+        (coll ? coll : [coll]).concat(...args)
 
 const concat = (coll, ...args) => concatFlow(...args)(coll)
 
