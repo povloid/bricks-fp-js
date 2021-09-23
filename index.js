@@ -13,6 +13,7 @@ const flow = (...fns) => {
     return f ? (v) => f(flow(...fns)(v)) : (v) => v
 }
 
+const threadFlow = flow
 const thread = (arg, ...fns) => flow(...fns)(arg)
 
 const getFlow = (path, defaultValue) =>
@@ -111,9 +112,59 @@ const size = (value) => (value == null ? 0 : value.length)
 
 const isEmpty = (value) => (value == null ? true : !value.length)
 
+const chunkFlow = (size) => (coll) => {
+    const items = coll instanceof Array ? coll : Object.entries(coll)
+    let result = []
+    let offset = 0
+
+    while (offset <= items.length - 1) {
+        result.push(items.slice(offset, offset + size))
+        offset += size
+    }
+
+    return result
+}
+
+const chunk = (coll, size) => chunkFlow(size)(coll)
+
+const reverse = (coll) => coll.reverse()
+
+const sortFlow =
+    (...args) =>
+    (coll) =>
+        coll.sort(...args)
+const sort = (coll, ...args) => sortFlow(...args)(coll)
+
+const someFlow =
+    (...args) =>
+    (coll) =>
+        coll.some(...args)
+const some = (coll, ...args) => someFlow(...args)(coll)
+
+const joinFlow = (separator) => (coll) => coll.join(separator)
+const join = (coll, separator) => joinFlow(separator)(coll)
+
+const includesFlow =
+    (...args) =>
+    (coll) =>
+        coll.includes(...args)
+
+const includes = (coll, ...args) => includesFlow(...args)(coll)
+
+const filterFlow = (fun) => (coll) => coll.filter(fun)
+const filter = (coll, fun) => filterFlow(fun)(coll)
+
+const concatFlow =
+    (...args) =>
+    (coll) =>
+        coll.concat(...args)
+
+const concat = (coll, ...args) => concatFlow(...args)(coll)
+
 module.exports = {
     constant,
     flow,
+    threadFlow,
     thread,
     isNil,
     isBoolean,
@@ -138,5 +189,18 @@ module.exports = {
     omitFlow,
     omit,
     size,
-    isEmpty
+    isEmpty,
+    chunkFlow,
+    chunk,
+    reverse,
+    sortFlow,
+    sort,
+    someFlow,
+    some,
+    filter,
+    join,
+    includesFlow,
+    includes,
+    concatFlow,
+    concat
 }

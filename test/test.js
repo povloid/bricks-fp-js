@@ -17,7 +17,15 @@ import {
     map,
     reduce,
     size,
-    isEmpty
+    isEmpty,
+    chunk,
+    reverse,
+    sort,
+    some,
+    join,
+    includes,
+    filter,
+    concat
 } from '../index'
 
 jest.setTimeout(30000)
@@ -191,4 +199,79 @@ test('test isEmpty', () => {
     expect(isEmpty('')).toBe(true)
     expect(isEmpty([1])).toBe(false)
     expect(isEmpty('1')).toBe(false)
+})
+
+test('test chunk', () => {
+    expect(chunk([])).toStrictEqual([])
+    expect(chunk([1, 2, 3, 4, 5], 3)).toStrictEqual([
+        [1, 2, 3],
+        [4, 5]
+    ])
+    expect(chunk([1, 2, 3, 4, 5], 1)).toStrictEqual([[1], [2], [3], [4], [5]])
+})
+
+test('test reverse', () => {
+    expect(reverse([])).toStrictEqual([])
+    expect(reverse([1, 2, 3, 4, 5])).toStrictEqual([5, 4, 3, 2, 1])
+})
+
+test('test sort', () => {
+    expect(sort([])).toStrictEqual([])
+    expect(sort([3, 2, 4, 1, 5])).toStrictEqual([1, 2, 3, 4, 5])
+    expect(
+        sort(
+            [
+                { a: 2, b: '2' },
+                { a: 1, b: '1' },
+                { a: 4, b: '4' },
+                { a: 5, b: '5' },
+                { a: 3, b: '3' }
+            ],
+            ({ a: a1 }, { a: a2 }) => {
+                if (a1 > a2) {
+                    return 1
+                }
+                if (a1 < a2) {
+                    return -1
+                }
+                return 0
+            }
+        )
+    ).toStrictEqual([
+        { a: 1, b: '1' },
+        { a: 2, b: '2' },
+        { a: 3, b: '3' },
+        { a: 4, b: '4' },
+        { a: 5, b: '5' }
+    ])
+})
+
+test('test some', () => {
+    const pred = (x) => x > 3
+    expect(some([], pred)).toStrictEqual(false)
+    expect(some([1, 2, 3], pred)).toStrictEqual(false)
+    expect(some([1, 2, 3, 3, 3, 4, 1], pred)).toStrictEqual(true)
+})
+
+test('test join', () => {
+    expect(join([], ',')).toStrictEqual('')
+    expect(join([1, 2, 3], ',')).toStrictEqual('1,2,3')
+})
+
+test('test includes', () => {
+    expect(includes([], 1)).toStrictEqual(false)
+    expect(includes([1, 2, 3], 2)).toStrictEqual(true)
+})
+
+test('test filter', () => {
+    const pred = (x) => x > 3
+    expect(filter([], pred)).toStrictEqual([])
+    expect(filter([1, 2, 3], pred)).toStrictEqual([])
+    expect(filter([1, 2, 3, 3, 3, 4, 1], pred)).toStrictEqual([4])
+})
+
+test('test concat', () => {
+    expect(concat([], [])).toStrictEqual([])
+    expect(concat([1, 2, 3], [4])).toStrictEqual([1, 2, 3, 4])
+    expect(concat([1, 2, 3], [4, 5], [6])).toStrictEqual([1, 2, 3, 4, 5, 6])
 })
