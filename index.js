@@ -2,11 +2,9 @@ const isNil = (value) => value == null
 const isBoolean = (value) => value === true || value === false
 const isNumber = (value) => typeof value == 'number'
 const isString = (value) => typeof value == 'string'
-const isArray = Array.isArray
-const isObject = (value) => {
-    const type = typeof value
-    return value != null && (type == 'object' || type == 'function')
-}
+const isArray = (value) => value instanceof Array
+const isObject = (value) => value instanceof Object
+const isFunction = (value) => value instanceof Function
 
 const constant = (v) => () => v
 
@@ -55,7 +53,8 @@ const path = (...keys) => pathFlow(...keys)
 const mapFlow = (fun) => (coll1) => {
     if (coll1 && fun) {
         let coll2 = []
-        for (const e of coll1) {
+        const items = coll1 instanceof Array ? coll1 : Object.entries(coll1)
+        for (const e of items) {
             coll2.push(fun(e))
         }
         return coll2
@@ -68,7 +67,8 @@ const map = (coll, fun) => mapFlow(fun)(coll)
 
 const reduceFlow = (fun, acc) => (coll) => {
     if (coll && fun) {
-        for (const e of coll) {
+        const items = coll instanceof Array ? coll : Object.entries(coll)
+        for (const e of items) {
             acc = fun(acc, e)
         }
         return acc

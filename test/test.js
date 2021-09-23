@@ -152,8 +152,17 @@ test('test map for array', () => {
     expect(map([1, 2, 3, 4, 5], (x) => x + 1)).toStrictEqual([2, 3, 4, 5, 6])
 })
 
+test('test map for object', () => {
+    expect(map([1, 2, 3, 4, 5], (x) => x + 1)).toStrictEqual([2, 3, 4, 5, 6])
+})
+
 test('test reduce', () => {
     expect(reduce([1, 2, 3, 4, 5], (a, x) => a + x, 0)).toBe(15)
+})
+
+test('test reduce object', () => {
+    expect(reduce({ a: 1, b: 2, c: 3 }, (a, [k, v]) => a + v, 0)).toBe(6)
+    expect(reduce({ a: 1, b: 2, c: 3 }, (a, [k]) => a + k, '')).toBe('abc')
 })
 
 test('test pick', () => {
