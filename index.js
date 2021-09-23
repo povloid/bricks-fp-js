@@ -107,6 +107,10 @@ const omitFlow = (keys) => (obj) =>
 
 const omit = (obj, keys) => omitFlow(keys)(obj)
 
+const size = (value) => (value == null ? 0 : value.length)
+
+const isEmpty = (value) => (value == null ? true : !value.length)
+
 module.exports = {
     constant,
     flow,
@@ -132,5 +136,7 @@ module.exports = {
     pickFlow,
     pick,
     omitFlow,
-    omit
+    omit,
+    size,
+    isEmpty
 }

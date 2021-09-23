@@ -15,7 +15,9 @@ import {
     pick,
     omit,
     map,
-    reduce
+    reduce,
+    size,
+    isEmpty
 } from '../index'
 
 jest.setTimeout(30000)
@@ -173,4 +175,20 @@ test('test pick', () => {
 test('test omit', () => {
     const obj = { a: 1, b: { c: { d: 1 } }, e: '3' }
     expect(omit(obj, ['b'])).toStrictEqual({ a: 1, e: '3' })
+})
+
+test('test size', () => {
+    expect(size([])).toBe(0)
+    expect(size('')).toBe(0)
+    expect(size([1])).toBe(1)
+    expect(size('1')).toBe(1)
+    expect(size([1, 3, 33, 4])).toBe(4)
+    expect(size('a bc')).toBe(4)
+})
+
+test('test isEmpty', () => {
+    expect(isEmpty([])).toBe(true)
+    expect(isEmpty('')).toBe(true)
+    expect(isEmpty([1])).toBe(false)
+    expect(isEmpty('1')).toBe(false)
 })
