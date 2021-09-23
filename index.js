@@ -52,6 +52,61 @@ const pathFlow =
 
 const path = (...keys) => pathFlow(...keys)
 
+const mapFlow = (fun) => (coll1) => {
+    if (coll1 && fun) {
+        let coll2 = []
+        for (const e of coll1) {
+            coll2.push(fun(e))
+        }
+        return coll2
+    } else {
+        return coll1
+    }
+}
+
+const map = (coll, fun) => mapFlow(fun)(coll)
+
+const reduceFlow = (fun, acc) => (coll) => {
+    if (coll && fun) {
+        for (const e of coll) {
+            acc = fun(acc, e)
+        }
+        return acc
+    } else {
+        return coll
+    }
+}
+
+const reduce = (coll, fun, acc) => reduceFlow(fun, acc)(coll)
+
+const pickFlow = (keys) => (obj) =>
+    obj && keys
+        ? reduce(
+              keys,
+              (acc, key) => {
+                  acc[key] = obj[key]
+                  return acc
+              },
+              {}
+          )
+        : obj
+
+const pick = (obj, keys) => pickFlow(keys)(obj)
+
+const omitFlow = (keys) => (obj) =>
+    obj && keys
+        ? reduce(
+              keys,
+              (obj, key) => {
+                  delete obj[key]
+                  return obj
+              },
+              obj
+          )
+        : obj
+
+const omit = (obj, keys) => omitFlow(keys)(obj)
+
 module.exports = {
     constant,
     flow,
@@ -69,5 +124,13 @@ module.exports = {
     updateFlow,
     update,
     pathFlow,
-    path
+    path,
+    mapFlow,
+    map,
+    reduceFlow,
+    reduce,
+    pickFlow,
+    pick,
+    omitFlow,
+    omit
 }
