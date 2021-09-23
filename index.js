@@ -172,6 +172,60 @@ const concat_ =
 
 const concat = (coll, ...args) => concat_(...args)(coll)
 
+const every_ =
+    (...args) =>
+    (coll) =>
+        coll ? coll.every(...args) : false
+
+const every = (coll, ...args) => every_(...args)(coll)
+
+const find_ =
+    (...args) =>
+    (coll) =>
+        coll ? coll.find(...args) : undefined
+
+const find = (coll, ...args) => find_(...args)(coll)
+
+const fill_ =
+    (...args) =>
+    (coll) =>
+        coll.fill(...args)
+
+const fill = (coll, ...args) => fill_(...args)(coll)
+
+const flat_ =
+    (...args) =>
+    (coll) =>
+        coll.flat(...args)
+
+const flat = (coll, ...args) => flat_(...args)(coll)
+
+const arrayFrom_ = () => (coll) => Array.from(coll)
+const arrayFrom = (coll) => arrayFrom_()(coll)
+
+const push_ =
+    (...args) =>
+    (coll) => {
+        coll.push(...args)
+        return coll
+    }
+const push = (coll, ...args) => push_(...args)(coll)
+
+const slice_ =
+    (...args) =>
+    (coll) =>
+        coll.slice(...args)
+
+const slice = (coll, ...args) => slice_(...args)(coll)
+
+const head = (array) => (array && array.length ? array[0] : undefined)
+const first = head
+
+const last = (array) => {
+    var length = array == null ? 0 : array.length
+    return length ? array[length - 1] : undefined
+}
+
 module.exports = {
     constant,
     flow,
@@ -213,5 +267,21 @@ module.exports = {
     includes_,
     includes,
     concat_,
-    concat
+    concat,
+    every_,
+    every,
+    find_,
+    find,
+    fill_,
+    fill,
+    flat_,
+    flat,
+    arrayFrom_,
+    arrayFrom,
+    push_,
+    push,
+    slice_,
+    slice,
+    head,
+    last
 }

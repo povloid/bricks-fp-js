@@ -25,7 +25,18 @@ import {
     join,
     includes,
     filter,
-    concat
+    concat,
+    every,
+    find,
+    fill,
+    flat,
+    from,
+    arrayFrom,
+    keys,
+    push,
+    slice,
+    head,
+    last
 } from '../index'
 
 jest.setTimeout(30000)
@@ -287,4 +298,46 @@ test('test concat', () => {
     expect(concat([], [])).toStrictEqual([])
     expect(concat([1, 2, 3], [4])).toStrictEqual([1, 2, 3, 4])
     expect(concat([1, 2, 3], [4, 5], [6])).toStrictEqual([1, 2, 3, 4, 5, 6])
+})
+
+test('test every', () => {
+    const pred = (x) => x > 3
+    expect(every(null, pred)).toStrictEqual(false)
+    expect(every([1, 2, 3], pred)).toStrictEqual(false)
+    expect(every([4, 5, 6], pred)).toStrictEqual(true)
+})
+
+test('test find', () => {
+    const pred = (x) => x > 3
+    expect(find(null, pred)).toStrictEqual(undefined)
+    expect(find([1, 2, 3], pred)).toStrictEqual(undefined)
+    expect(find([1, 2, 3, 4, 5, 6], pred)).toStrictEqual(4)
+})
+
+test('test fill', () => {
+    expect(fill([1, 2, 3, null, null, null], 0, 3)).toStrictEqual([1, 2, 3, 0, 0, 0])
+})
+
+test('test flat', () => {
+    expect(flat([1, 2, [3], 4])).toStrictEqual([1, 2, 3, 4])
+})
+
+test('test arrayFrom', () => {
+    expect(arrayFrom([1, 2, [3], 4])).toStrictEqual([1, 2, [3], 4])
+})
+
+test('test push', () => {
+    expect(push([1, 2, [3], 4], 1, 2, 33)).toStrictEqual([1, 2, [3], 4, 1, 2, 33])
+})
+
+test('test slice', () => {
+    expect(slice([1, 2, [3], 4], 1, 3)).toStrictEqual([2, [3]])
+})
+
+test('test head', () => {
+    expect(head([1, 2, [3], 4])).toStrictEqual(1)
+})
+
+test('test last', () => {
+    expect(last([1, 2, [3], 4])).toStrictEqual(4)
 })
