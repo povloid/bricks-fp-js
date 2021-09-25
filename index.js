@@ -265,6 +265,7 @@ module.exports = {
     isString,
     isArray,
     isObject,
+    isFunction,
     get_,
     get,
     set_,
