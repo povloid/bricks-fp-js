@@ -240,6 +240,20 @@ const last = (array) => {
     return length ? array[length - 1] : undefined
 }
 
+const assign_ =
+    (...args) =>
+    (obj) =>
+        Object.assign(obj, ...args)
+
+const assign = (obj, ...args) => assign_(...args)(obj)
+
+const entries = (obj) => Object.entries(obj)
+
+const fromEntries = (fromEntries) => Object.fromEntries(fromEntries)
+
+const keys = (obj) => Object.keys(obj)
+const values = (obj) => Object.values(obj)
+
 module.exports = {
     constant,
     flow,
@@ -299,5 +313,11 @@ module.exports = {
     slice_,
     slice,
     head,
-    last
+    last,
+    assign_,
+    assign,
+    entries,
+    keys,
+    values,
+    fromEntries
 }

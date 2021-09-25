@@ -38,7 +38,11 @@ import {
     head,
     last,
     reduceRight,
-    thread
+    thread,
+    assign,
+    entries,
+    fromEntries,
+    values
 } from '../index'
 
 jest.setTimeout(30000)
@@ -347,4 +351,34 @@ test('test head', () => {
 
 test('test last', () => {
     expect(last([1, 2, [3], 4])).toStrictEqual(4)
+})
+
+test('test assign', () => {
+    expect(assign({ a: 1 }, { b: 2 }, { c: 3 })).toStrictEqual({ a: 1, b: 2, c: 3 })
+})
+
+test('test entries', () => {
+    expect(entries({ a: 1, b: 2, c: 3 })).toStrictEqual([
+        ['a', 1],
+        ['b', 2],
+        ['c', 3]
+    ])
+})
+
+test('test from entries', () => {
+    expect(
+        fromEntries([
+            ['a', 1],
+            ['b', 2],
+            ['c', 3]
+        ])
+    ).toStrictEqual({ a: 1, b: 2, c: 3 })
+})
+
+test('test keys', () => {
+    expect(keys({ a: 1, b: 2, c: 3 })).toStrictEqual(['a', 'b', 'c'])
+})
+
+test('test values', () => {
+    expect(values({ a: 1, b: 2, c: 3 })).toStrictEqual([1, 2, 3])
 })
