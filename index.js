@@ -49,7 +49,7 @@ const path_ =
     (...nextKeys) =>
         keys.concat(nextKeys)
 
-const path = (...keys) => path_(...keys)
+const path = (...keys) => keys
 
 const map_ = (fun) => (coll1) => {
     if (coll1 && fun) {
