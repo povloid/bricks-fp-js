@@ -254,6 +254,13 @@ const fromEntries = (fromEntries) => Object.fromEntries(fromEntries)
 const keys = (obj) => Object.keys(obj)
 const values = (obj) => Object.values(obj)
 
+const join2_ =
+    (x) =>
+    ([head, ...rest]) =>
+        rest.reduce((a, b) => a.concat([x, b]), [head])
+
+const join2 = (coll, x) => join2_(x)(coll)
+
 module.exports = {
     constant,
     flow,
@@ -293,6 +300,7 @@ module.exports = {
     sort,
     some_,
     some,
+    filter_,
     filter,
     join,
     includes_,
@@ -320,5 +328,7 @@ module.exports = {
     entries,
     keys,
     values,
-    fromEntries
+    fromEntries,
+    join2_,
+    join2
 }
