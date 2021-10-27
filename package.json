@@ -1,6 +1,6 @@
 {
     "name": "bricks-fp",
-    "version": "1.0.9",
+    "version": "1.0.10",
     "description": "bricks of functional programming",
     "main": "lib/bricks-fp.js",
     "source": "index.js",

@@ -7,5 +7,6 @@ module.exports = {
         path: path.resolve(__dirname, 'lib'),
         library: { name: 'bricksFP', type: 'umd' }
     },
+    devtool: 'source-map',
     mode: 'production'
 }
