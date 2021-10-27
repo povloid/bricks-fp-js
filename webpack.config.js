@@ -1,11 +1,12 @@
 const path = require('path')
 
 module.exports = {
-    entry: './index.js',
+    entry: { 'bricks-fp': './index.js' },
     output: {
-        filename: 'bricks-fp.js',
+        filename: '[name].js',
         path: path.resolve(__dirname, 'lib'),
-        library: { name: 'bricksFP', type: 'umd' }
+        library: { name: 'bricksFP', type: 'umd' },
+        globalObject: 'this'
     },
     devtool: 'source-map',
     mode: 'production'
